@@ -1,0 +1,2 @@
+7e4c3989-3127-4d88-8d54-cccbb035dcfa||pokaz co masz ||False
+b44c53f4-542f-49aa-988e-c889b9252e53||zrob skok w bok||False

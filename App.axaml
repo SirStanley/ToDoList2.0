@@ -10,7 +10,8 @@
 	</Application.DataTemplates>
 
 	<Application.Styles>
-		<FluentTheme />
+		<!-- Przywrócenie FluentTheme z właściwości Mode -->
+		<FluentTheme/>
 	</Application.Styles>
 
 	<Application.Resources>

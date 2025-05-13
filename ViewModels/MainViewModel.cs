@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Organizer.ViewModels
 {
@@ -14,102 +15,90 @@ namespace Organizer.ViewModels
         private readonly TaskRepository _repo = new();
 
         [ObservableProperty]
-        private DateTime selectedDate = DateTime.Today;
+        private DateTimeOffset? selectedDate = DateTimeOffset.Now;
 
         [ObservableProperty]
         private string newTaskText = string.Empty;
 
-        public ObservableCollection<TaskItem> Tasks { get; } = new();
+        [ObservableProperty]
+        private string loadingMessage = string.Empty;
 
-        public Action? RefreshTasks { get; set; }  // <<--- MUSI być public
+        [ObservableProperty]
+        private int progress = 0;
+
+        public ObservableCollection<TaskItem> Tasks { get; } = new();
 
         public MainViewModel()
         {
-            // Przy starcie można załadować zadania jeśli chcesz
+            LoadTasksAsync().ConfigureAwait(false);
         }
 
-        partial void OnSelectedDateChanged(DateTime value)
+        partial void OnSelectedDateChanged(DateTimeOffset? value)
         {
-            LoadTasks();
+            if (value != null)
+            {
+                LoadTasksAsync().ConfigureAwait(false);
+            }
         }
 
         [RelayCommand]
-        private void AddTask()
+        public async Task AddTaskAsync()
         {
-            if (string.IsNullOrWhiteSpace(NewTaskText))
-                return;
+            if (string.IsNullOrWhiteSpace(NewTaskText)) return;
 
-            try
+            if (SelectedDate.HasValue)
             {
                 var task = new TaskItem
                 {
                     Text = NewTaskText,
-                    Date = SelectedDate
+                    Date = SelectedDate.Value.DateTime
                 };
 
-                _repo.SaveTask(task);
+                await _repo.SaveTaskAsync(task);
                 Tasks.Add(task);
                 NewTaskText = string.Empty;
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Błąd przy dodawaniu zadania: {ex.Message}");
-            }
         }
 
         [RelayCommand]
-        private void DeleteTask(TaskItem task)
+        public async Task DeleteTaskAsync(TaskItem task)
         {
             if (task == null) return;
 
-            try
+            if (SelectedDate.HasValue)
             {
-                _repo.DeleteTask(task.Id, task.Date);
+                await _repo.DeleteTaskAsync(task.Id, SelectedDate.Value.DateTime);
                 Tasks.Remove(task);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Błąd przy usuwaniu zadania: {ex.Message}");
-            }
-        }
-
-        private void LoadTasks()
-        {
-            Tasks.Clear();
-            try
-            {
-                var tasks = _repo.GetTasksForDate(SelectedDate);
-
-                if (tasks != null && tasks.Any())
-                {
-                    foreach (var task in tasks)
-                    {
-                        Tasks.Add(task);
-                    }
-                }
-                else
-                {
-                    if (!_repo.DoesTasksFileExist(SelectedDate))
-                    {
-                        _repo.SaveTasksForDate(SelectedDate, new List<TaskItem>());
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Błąd przy ładowaniu zadań: {ex.Message}");
             }
         }
 
         [RelayCommand]
-        private void OpenTasks()
+        public async Task LoadTasksAsync()
         {
-            LoadTasks();
+            Tasks.Clear();
+            if (SelectedDate.HasValue)
+            {
+                var tasks = await _repo.GetTasksForDateAsync(SelectedDate.Value.DateTime);
+                foreach (var task in tasks)
+                {
+                    Tasks.Add(task);
+                }
+            }
         }
 
-        public void RefreshCurrentDayTasks()
+        [RelayCommand]
+        public async Task SaveTasksAsync()
         {
-            LoadTasks();
+            if (SelectedDate.HasValue)
+            {
+                await _repo.SaveTasksForDateAsync(SelectedDate.Value.DateTime, Tasks.ToList());
+            }
+        }
+
+        [RelayCommand]
+        public void ResetToToday()
+        {
+            SelectedDate = DateTimeOffset.Now;
         }
     }
 }

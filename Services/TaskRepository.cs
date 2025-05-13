@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Organizer.Models;
 
 namespace Organizer.Services
@@ -17,7 +18,8 @@ namespace Organizer.Services
                 Directory.CreateDirectory(FolderPath);
         }
 
-        public IEnumerable<TaskItem> GetTasksForDate(DateTime date)
+        // Pobiera zadania z pliku dla danego dnia
+        public async Task<IEnumerable<TaskItem>> GetTasksForDateAsync(DateTime date)
         {
             string filePath = GetFilePath(date);
 
@@ -25,7 +27,7 @@ namespace Organizer.Services
             if (!File.Exists(filePath))
                 return Enumerable.Empty<TaskItem>();
 
-            var lines = File.ReadAllLines(filePath);
+            var lines = await File.ReadAllLinesAsync(filePath);
             var tasks = new List<TaskItem>();
 
             // Czytamy plik i parsujemy linie na zadania
@@ -48,15 +50,11 @@ namespace Organizer.Services
 
             return tasks;
         }
-        public bool DoesTasksFileExist(DateTime date)
-        {
-            var path = GetFilePath(date);
-            return File.Exists(path);
-        }
 
-        public void SaveTask(TaskItem task)
+        // Zapisuje zadanie do pliku
+        public async Task SaveTaskAsync(TaskItem task)
         {
-            var tasks = GetTasksForDate(task.Date).ToList();
+            var tasks = (await GetTasksForDateAsync(task.Date)).ToList();
             var existing = tasks.FirstOrDefault(t => t.Id == task.Id);
 
             if (existing != null)
@@ -71,24 +69,33 @@ namespace Organizer.Services
                 tasks.Add(task);
             }
 
-            SaveTasksToFile(task.Date, tasks);
+            await SaveTasksToFileAsync(task.Date, tasks);
         }
 
-        public void DeleteTask(Guid taskId, DateTime date)
+        // Usuwa zadanie z pliku
+        public async Task DeleteTaskAsync(Guid taskId, DateTime date)
         {
-            var tasks = GetTasksForDate(date).Where(t => t.Id != taskId).ToList();
-            SaveTasksToFile(date, tasks);
+            var tasks = (await GetTasksForDateAsync(date)).Where(t => t.Id != taskId).ToList();
+            await SaveTasksToFileAsync(date, tasks);
         }
 
-        private void SaveTasksToFile(DateTime date, IEnumerable<TaskItem> tasks)
+        // Zapisuje zadania do pliku dla określonej daty
+        public async Task SaveTasksForDateAsync(DateTime date, IEnumerable<TaskItem> tasks)
+        {
+            await SaveTasksToFileAsync(date, tasks);
+        }
+
+        // Zapisuje wszystkie zadania do pliku
+        private async Task SaveTasksToFileAsync(DateTime date, IEnumerable<TaskItem> tasks)
         {
             string filePath = GetFilePath(date);
 
             // Tworzymy lub nadpisujemy plik z zadaniami
             var lines = tasks.Select(t => $"{t.Id}||{t.Text}||{t.IsDone}");
-            File.WriteAllLines(filePath, lines);
+            await File.WriteAllLinesAsync(filePath, lines);
         }
 
+        // Generuje ścieżkę do pliku dla zadanych dat
         private string GetFilePath(DateTime date)
         {
             // Ścieżka do folderu "Tasks" w katalogu uruchomienia aplikacji (np. bin/Debug/net8.0)
@@ -101,17 +108,6 @@ namespace Organizer.Services
             // Generujemy pełną ścieżkę do pliku dla danego dnia
             string fileName = date.ToString("yyyy-MM-dd") + ".txt";
             return Path.Combine(folderPath, fileName);
-        }
-
-        // 🔧 Metody dla MainView.axaml.cs i CalendarWindow, aby obsługiwać zadania dla konkretnej daty
-        public IEnumerable<TaskItem> LoadTasksForDate(DateTime date)
-        {
-            return GetTasksForDate(date);
-        }
-
-        public void SaveTasksForDate(DateTime date, IEnumerable<TaskItem> tasks)
-        {
-            SaveTasksToFile(date, tasks);
         }
     }
 }

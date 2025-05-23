@@ -3,7 +3,6 @@ using CommunityToolkit.Mvvm.Input;
 using Organizer.Models;
 using Organizer.Services;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -55,7 +54,12 @@ namespace Organizer.ViewModels
                 };
 
                 await _repo.SaveTaskAsync(task);
-                Tasks.Add(task);
+
+                if (task.Text.Contains('!'))
+                    Tasks.Insert(0, task);
+                else
+                    Tasks.Add(task);
+
                 NewTaskText = string.Empty;
             }
         }
@@ -79,7 +83,8 @@ namespace Organizer.ViewModels
             if (SelectedDate.HasValue)
             {
                 var tasks = await _repo.GetTasksForDateAsync(SelectedDate.Value.DateTime);
-                foreach (var task in tasks)
+                var ordered = tasks.OrderByDescending(t => t.Text.Contains('!')).ThenBy(t => t.Date);
+                foreach (var task in ordered)
                 {
                     Tasks.Add(task);
                 }
@@ -99,6 +104,24 @@ namespace Organizer.ViewModels
         public void ResetToToday()
         {
             SelectedDate = DateTimeOffset.Now;
+        }
+
+        [RelayCommand]
+        public void NavigatePreviousDay()
+        {
+            if (SelectedDate.HasValue)
+            {
+                SelectedDate = SelectedDate.Value.AddDays(-1);
+            }
+        }
+
+        [RelayCommand]
+        public void NavigateNextDay()
+        {
+            if (SelectedDate.HasValue)
+            {
+                SelectedDate = SelectedDate.Value.AddDays(1);
+            }
         }
     }
 }

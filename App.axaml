@@ -1,8 +1,8 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             x:Class="Organizer.App"
              xmlns:local="using:Organizer"
              xmlns:converters="using:Organizer.Converters"
+             x:Class="Organizer.App"
              RequestedThemeVariant="Default">
 
 	<Application.DataTemplates>
@@ -10,12 +10,12 @@
 	</Application.DataTemplates>
 
 	<Application.Styles>
-		<!-- Przywrócenie FluentTheme z właściwości Mode -->
-		<FluentTheme/>
+		<FluentTheme />
 	</Application.Styles>
 
 	<Application.Resources>
-		<!-- Dodanie konwertera do zasobów aplikacji -->
 		<converters:BoolToBackgroundColorConverter x:Key="BoolToBackgroundColorConverter" />
+		<converters:ExclamationToBrushConverter x:Key="ExclBrush" />
 	</Application.Resources>
+
 </Application>

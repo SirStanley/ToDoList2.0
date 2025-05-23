@@ -19,6 +19,7 @@ namespace Organizer.Views
             viewModel.OnFinished = ShowMainView;
         }
 
+
         private void ShowMainView()
         {
             Dispatcher.UIThread.Post(() =>

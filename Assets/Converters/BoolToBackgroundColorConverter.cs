@@ -20,7 +20,6 @@ namespace Organizer.Converters
 
         public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
-            // Obs³uguje null w ConvertBack
             throw new NotImplementedException();
         }
     }

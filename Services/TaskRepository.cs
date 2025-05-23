@@ -9,11 +9,11 @@ namespace Organizer.Services
 {
     public class TaskRepository
     {
-        private const string FolderPath = "Tasks";  // Folder w którym będą przechowywane pliki z zadaniami
+        private const string FolderPath = "Tasks";  
 
         public TaskRepository()
         {
-            // Tworzymy folder "Tasks", jeśli jeszcze nie istnieje
+            
             if (!Directory.Exists(FolderPath))
                 Directory.CreateDirectory(FolderPath);
         }

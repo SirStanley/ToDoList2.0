@@ -2,113 +2,123 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="clr-namespace:Organizer.ViewModels;assembly=Organizer"
         xmlns:models="clr-namespace:Organizer.Models;assembly=Organizer"
+        xmlns:converters="using:Organizer.Converters"
         x:Class="Organizer.Views.MainView"
-		WindowStartupLocation="CenterScreen"
+        WindowStartupLocation="CenterScreen"
         Title="Organizer"
         Width="400" Height="550">
 
-    <Window.DataContext>
-        <vm:MainViewModel />
-    </Window.DataContext>
+	<Window.DataContext>
+		<vm:MainViewModel />
+	</Window.DataContext>
 
-    <Grid RowDefinitions="Auto, *, Auto" Margin="0">
-        <!-- Top bar: Save button, DatePicker -->
-        <Grid Grid.Row="0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
+	<Grid RowDefinitions="Auto, Auto, *, Auto" Margin="0">
+		<!-- Top bar: Reset, DatePicker, Save -->
+		<Grid Grid.Row="0">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto"/>
+				<ColumnDefinition Width="*"/>
+				<ColumnDefinition Width="Auto"/>
+			</Grid.ColumnDefinitions>
 
-            <!-- Reset to Today Button -->
-            <Button Grid.Column="0"
-                    Command="{Binding ResetToTodayCommand}"
-                    Margin="10"
-                    HorizontalAlignment="Center">
-                <Button.Content>
-                    <PathIcon Data="M12,4 L10,6 L14,6 L14,10 L16,10 L16,6 L18,6 L12,4 Z"
-                              Height="20" Width="20" Foreground="Black"/>
-                </Button.Content>
-            </Button>
+			<Button Grid.Column="0"
+					Command="{Binding ResetToTodayCommand}"
+					Margin="10"
+					HorizontalAlignment="Center">
+				<PathIcon Data="M12,4 L10,6 L14,6 L14,10 L16,10 L16,6 L18,6 L12,4 Z"
+						  Height="20" Width="20" Foreground="Black"/>
+			</Button>
 
-            <!-- DatePicker for date selection -->
-            <DatePicker x:Name="DatePicker"
-                        SelectedDate="{Binding SelectedDate, Mode=TwoWay}"
-                        Margin="10"
-                        VerticalAlignment="Center"
-                        HorizontalAlignment="Stretch"
-                        Grid.Column="1" />
+			<DatePicker x:Name="DatePicker"
+						SelectedDate="{Binding SelectedDate, Mode=TwoWay}"
+						Margin="10"
+						VerticalAlignment="Center"
+						HorizontalAlignment="Stretch"
+						Grid.Column="1" />
 
-            <!-- Save button -->
-            <Button Grid.Column="2"
-                    Command="{Binding SaveTasksAsyncCommand}"
-                    Margin="10"
-                    HorizontalAlignment="Center">
-                <Button.Content>
-                    <PathIcon Data="M12,2 L12,0 L4,0 L4,2 L2,2 L2,14 L14,14 L14,2 Z M9,1 L9,3 L5,3 L5,1 L9,1 Z M7,4 L7,12 L5,12 L5,4 L7,4 Z M9,4 L9,12 L11,12 L11,4 L9,4 Z"
-                              Height="20" Width="20" Foreground="Green"/>
-                </Button.Content>
-            </Button>
-        </Grid>
+			<Button Grid.Column="2"
+					Command="{Binding SaveTasksAsync}"
+					Margin="10"
+					HorizontalAlignment="Center">
+				<PathIcon Data="M12,2 L12,0 L4,0 L4,2 L2,2 L2,14 L14,14 L14,2 Z M9,1 L9,3 L5,3 L5,1 L9,1 Z M7,4 L7,12 L5,12 L5,4 L7,4 Z M9,4 L9,12 L11,12 L11,4 L9,4 Z"
+						  Height="20" Width="20" Foreground="Green"/>
+			</Button>
+		</Grid>
 
-        <!-- Task list -->
-        <ScrollViewer Grid.Row="1">
-            <ItemsControl ItemsSource="{Binding Tasks}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate DataType="models:TaskItem">
-                        <Border BorderBrush="Blue"
-                                BorderThickness="1"
-                                CornerRadius="8"
-                                Margin="2"
-                                Padding="10"
-                                Background="{Binding IsDone, Converter={StaticResource BoolToBackgroundColorConverter}}">
-                            <Grid ColumnDefinitions="Auto, *, Auto" Margin="5">
+		<!-- Navigation buttons under DatePicker -->
+		<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="1" Margin="0,0,0,10" Spacing="15">
 
-                                <CheckBox IsChecked="{Binding IsDone, Mode=TwoWay}"
-                                          VerticalAlignment="Center"
-                                          HorizontalAlignment="Center"
-                                          Margin="5"
-                                          Width="20"/>
+			<!-- Przycisk cofania o dzień -->
+			<Button Command="{Binding NavigatePreviousDay}" Width="40" Height="30">
+				<PathIcon Data="M15,4 L7,12 L15,20" Height="16" Width="16"  Foreground="Black" />
+			</Button>
 
-                                <TextBlock Text="{Binding Text}"
-                                           VerticalAlignment="Center"
-                                           Margin="10, 0, 0, 0"
-                                           Grid.Column="1"/>
+			<!-- Przycisk przejścia o dzień do przodu -->
+			<Button Command="{Binding NavigateNextDay}" Width="40" Height="30">
+				<PathIcon Data="M9,4 L17,12 L9,20" Height="16" Width="16"  Foreground="Black" />
+			</Button>
 
-                                <Button Grid.Column="2"
-                                        Command="{Binding DataContext.DeleteTaskAsyncCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
-                                        CommandParameter="{Binding .}">
-                                    <PathIcon Data="M3,6 L5,6 L5,17 C5,18.1 5.9,19 7,19 L15,19 C16.1,19 17,18.1 17,17 L17,6 L19,6 L19,4 L15,4 L15,3 C15,2.4 14.6,2 14,2 L10,2 C9.4,2 9,2.4 9,3 L9,4 L5,4 L5,6 Z"
-                                              Height="16" Width="16" Foreground="Red"/>
-                                </Button>
+		</StackPanel>
+	
+		<!-- Task list -->
+		<ScrollViewer Grid.Row="2">
+			<ItemsControl ItemsSource="{Binding Tasks}">
+				<ItemsControl.ItemTemplate>
+					<DataTemplate DataType="models:TaskItem">
+						<Border BorderBrush="Blue"
+								BorderThickness="1"
+								CornerRadius="8"
+								Margin="2"
+								Padding="10"
+								Background="{Binding IsDone, Converter={StaticResource BoolToBackgroundColorConverter}}">
+							<Grid ColumnDefinitions="Auto, *, Auto" Margin="5">
 
-                            </Grid>
-                        </Border>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </ScrollViewer>
+								<CheckBox IsChecked="{Binding IsDone, Mode=TwoWay}"
+										  VerticalAlignment="Center"
+										  HorizontalAlignment="Center"
+										  Margin="5"
+										  Width="20"/>
 
-        <!-- Add new task -->
-        <Grid Grid.Row="2" Margin="10">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
+								<TextBlock Text="{Binding Text}"
+										   VerticalAlignment="Center"
+										   Margin="10,0,0,0"
+										   Grid.Column="1"
+										   Foreground="{Binding Text, Converter={StaticResource ExclBrush}}"/>
 
-            <TextBox x:Name="NewTaskTextBox"
-                     Grid.Column="0"
-                     Text="{Binding NewTaskText, UpdateSourceTrigger=PropertyChanged}"
-                     Watermark="Add a new task..."
-                     HorizontalAlignment="Stretch"
-                     VerticalAlignment="Center"/>
+								<Button Grid.Column="2"
+										Click="Delete_Click"
+										CommandParameter="{Binding}">
+									<PathIcon Data="M3,6 L5,6 L5,17 C5,18.1 5.9,19 7,19 L15,19 C16.1,19 17,18.1 17,17 L17,6 L19,6 L19,4 L15,4 L15,3 C15,2.4 14.6,2 14,2 L10,2 C9.4,2 9,2.4 9,3 L9,4 L5,4 L5,6 Z"
+											  Height="16" Width="16" Foreground="Red"/>
+								</Button>
 
-            <Button Grid.Column="1"
-                    Command="{Binding AddTaskAsyncCommand}"
-                    Margin="5,0,0,0">
-                <PathIcon Data="M8,2 L10,2 L10,8 L16,8 L16,10 L10,10 L10,16 L8,16 L8,10 L2,10 L2,8 L8,8 Z"
-                          Height="16" Width="16" Foreground="Green"/>
-            </Button>
-        </Grid>
-    </Grid>
+							</Grid>
+						</Border>
+					</DataTemplate>
+				</ItemsControl.ItemTemplate>
+			</ItemsControl>
+		</ScrollViewer>
+
+		<!-- Add new task -->
+		<Grid Grid.Row="3" Margin="10">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*" />
+				<ColumnDefinition Width="Auto" />
+			</Grid.ColumnDefinitions>
+
+			<TextBox x:Name="NewTaskTextBox"
+					 Grid.Column="0"
+					 Text="{Binding NewTaskText, UpdateSourceTrigger=PropertyChanged}"
+					 Watermark="Add a new task..."
+					 HorizontalAlignment="Stretch"
+					 VerticalAlignment="Center"/>
+
+			<Button Grid.Column="1"
+					Command="{Binding AddTaskAsync}"
+					Margin="5,0,0,0">
+				<PathIcon Data="M8,2 L10,2 L10,8 L16,8 L16,10 L10,10 L10,16 L8,16 L8,10 L2,10 L2,8 L8,8 Z"
+						  Height="16" Width="16" Foreground="Green"/>
+			</Button>
+		</Grid>
+	</Grid>
 </Window>

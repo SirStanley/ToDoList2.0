@@ -18,17 +18,27 @@
 		<SolidColorBrush Color="#2C3E50"/>
 	</Window.Background>
 
-	<Grid RowDefinitions="Auto,*,Auto,Auto" ColumnDefinitions="*,Auto">
-		<TextBlock Grid.Row="0"
+	<Grid RowDefinitions="Auto,Auto,*,Auto,Auto" ColumnDefinitions="*">
+		<!-- Tytuł -->
+		<TextBlock Grid.Row="1"
                    Text="My Organizer"
                    FontSize="24"
+                   FontWeight="Bold"
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center"
                    Foreground="White"
                    Margin="0,20,0,10"/>
+		
+		<Path Grid.Row="0"
+				  Data="M12,2A10,10 0 1,0 22,12A10,10 0 0,0 12,2M16.59,7.58L10,14.17L7.41,11.58L6,13L10,17L18,9L16.59,7.58Z"
+				  Fill="White"
+				  Stretch="Uniform"
+				  Width="150" Height="150"
+			      Margin="80"
+				  HorizontalAlignment="Center"/>
 
 		<!-- Pasek postępu -->
-		<ProgressBar Grid.Row="2"
+		<ProgressBar Grid.Row="3"
                      Width="350"
                      Height="15"
                      HorizontalAlignment="Center"
@@ -39,7 +49,7 @@
                      CornerRadius="20"/>
 
 		<!-- Tekst 'Loading...' pod paskiem -->
-		<TextBlock Grid.Row="3"
+		<TextBlock Grid.Row="4"
                    Text="Loading..."
                    FontSize="16"
                    HorizontalAlignment="Center"

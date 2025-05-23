@@ -3,7 +3,6 @@
 		<OutputType>WinExe</OutputType>
 		<TargetFramework>net8.0</TargetFramework>
 		<Nullable>enable</Nullable>
-		<EntityFrameworkCore>false</EntityFrameworkCore>
 		<AvaloniaUseCompiledBindingsByDefault>false</AvaloniaUseCompiledBindingsByDefault>
 	</PropertyGroup>
 
@@ -12,12 +11,8 @@
 		<PackageReference Include="Avalonia.Desktop" Version="11.2.1" />
 		<PackageReference Include="Avalonia.Themes.Fluent" Version="11.2.1" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<None Update="Assets\Splash.png">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-			<BuildAction>Content</BuildAction>
-		</None>
+		<AvaloniaResource Include="Assets\clipboard.ico">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</AvaloniaResource>
 	</ItemGroup>
 </Project>

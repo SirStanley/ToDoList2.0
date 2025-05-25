@@ -67,11 +67,6 @@ namespace Organizer.ViewModels
             }
         }
 
-        public void CancelLoading()
-        {
-            _cts.Cancel();
-        }
-
         public event PropertyChangedEventHandler? PropertyChanged;
         protected virtual void OnPropertyChanged(string propertyName)
             => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

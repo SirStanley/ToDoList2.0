@@ -1,9 +1,7 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using Avalonia.Threading;
 using Organizer.Views;
-using System;
 using System.Threading.Tasks;
 
 namespace Organizer
@@ -29,20 +27,16 @@ namespace Organizer
         {
             var splash = new SplashView();
             splash.Show();
-            Console.WriteLine("Splash screen is displayed");
 
-            // Czekamy 3 sekundy (symulacja ³adowania)
-            await Task.Delay(5000);
-            Console.WriteLine("Splash screen closing");
+            // Loading Simulation
+            await Task.Delay(6000);
 
             splash.Close();
 
-            // Utworzenie i wyœwietlenie MainView tylko raz
+            // MainView Opening
             var mainWindow = new MainView();
             desktop.MainWindow = mainWindow;
           
-
-            Console.WriteLine("MainView is shown");
         }
     }
 }

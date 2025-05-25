@@ -13,7 +13,7 @@
 	</Window.DataContext>
 
 	<Grid RowDefinitions="Auto, Auto, *, Auto" Margin="0">
-		<!-- Top bar: Reset, DatePicker, Save -->
+		<!-- Top bar -->
 		<Grid Grid.Row="0">
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="Auto"/>
@@ -21,7 +21,7 @@
 				<ColumnDefinition Width="Auto"/>
 			</Grid.ColumnDefinitions>
 
-			<Button Grid.Column="0"
+			<Button Grid.Column="0" ToolTip.Tip="Today"
 					Command="{Binding ResetToTodayCommand}"
 					Margin="10"
 					HorizontalAlignment="Center">
@@ -36,7 +36,7 @@
 						HorizontalAlignment="Stretch"
 						Grid.Column="1" />
 
-			<Button Grid.Column="2"
+			<Button Grid.Column="2" ToolTip.Tip="Save"
 					Command="{Binding SaveTasksAsync}"
 					Margin="10"
 					HorizontalAlignment="Center">
@@ -45,16 +45,16 @@
 			</Button>
 		</Grid>
 
-		<!-- Navigation buttons under DatePicker -->
+		<!-- Navigation buttons  -->
 		<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="1" Margin="0,0,0,10" Spacing="15">
 
-			<!-- Przycisk cofania o dzień -->
-			<Button Command="{Binding NavigatePreviousDay}" Width="40" Height="30">
+			<!-- Back button -->
+			<Button Command="{Binding NavigatePreviousDay}" Width="40" Height="30" ToolTip.Tip="Back">
 				<PathIcon Data="M15,4 L7,12 L15,20" Height="16" Width="16"  Foreground="Black" />
 			</Button>
 
-			<!-- Przycisk przejścia o dzień do przodu -->
-			<Button Command="{Binding NavigateNextDay}" Width="40" Height="30">
+			<!-- Forward Button -->
+			<Button Command="{Binding NavigateNextDay}" Width="40" Height="30" ToolTip.Tip="Next">
 				<PathIcon Data="M9,4 L17,12 L9,20" Height="16" Width="16"  Foreground="Black" />
 			</Button>
 
@@ -85,7 +85,7 @@
 										   Grid.Column="1"
 										   Foreground="{Binding Text, Converter={StaticResource ExclBrush}}"/>
 
-								<Button Grid.Column="2"
+								<Button Grid.Column="2" ToolTip.Tip="Delete"
 										Click="Delete_Click"
 										CommandParameter="{Binding}">
 									<PathIcon Data="M3,6 L5,6 L5,17 C5,18.1 5.9,19 7,19 L15,19 C16.1,19 17,18.1 17,17 L17,6 L19,6 L19,4 L15,4 L15,3 C15,2.4 14.6,2 14,2 L10,2 C9.4,2 9,2.4 9,3 L9,4 L5,4 L5,6 Z"
@@ -113,11 +113,12 @@
 					 HorizontalAlignment="Stretch"
 					 VerticalAlignment="Center"/>
 
-			<Button Grid.Column="1"
+			<Button Grid.Column="1" ToolTip.Tip="Add"
 					Command="{Binding AddTaskAsync}"
 					Margin="5,0,0,0">
 				<PathIcon Data="M8,2 L10,2 L10,8 L16,8 L16,10 L10,10 L10,16 L8,16 L8,10 L2,10 L2,8 L8,8 Z"
 						  Height="16" Width="16" Foreground="Green"/>
+				
 			</Button>
 		</Grid>
 	</Grid>

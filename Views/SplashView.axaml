@@ -3,58 +3,97 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        d:DesignWidth="400"
-        d:DesignHeight="300"
-        Width="400"
-        Height="550"
+        d:DesignWidth="400" d:DesignHeight="550"
+        Width="400" Height="550"
         WindowStartupLocation="CenterScreen"
         SystemDecorations="None"
         Topmost="True"
         x:Class="Organizer.Views.SplashView"
         Title="SplashScreen">
 
-	<!-- Tło z kolorem -->
 	<Window.Background>
 		<SolidColorBrush Color="#2C3E50"/>
 	</Window.Background>
 
-	<Grid RowDefinitions="Auto,Auto,*,Auto,Auto" ColumnDefinitions="*">
-		<!-- Tytuł -->
-		<TextBlock Grid.Row="1"
-                   Text="My Organizer"
-                   FontSize="24"
-                   FontWeight="Bold"
-                   HorizontalAlignment="Center"
-                   VerticalAlignment="Center"
-                   Foreground="White"
-                   Margin="0,20,0,10"/>
-		
-		<Path Grid.Row="0"
-				  Data="M12,2A10,10 0 1,0 22,12A10,10 0 0,0 12,2M16.59,7.58L10,14.17L7.41,11.58L6,13L10,17L18,9L16.59,7.58Z"
-				  Fill="White"
-				  Stretch="Uniform"
-				  Width="150" Height="150"
-			      Margin="80"
-				  HorizontalAlignment="Center"/>
+	<Grid RowDefinitions="*,*,*,*,*">
 
-		<!-- Pasek postępu -->
-		<ProgressBar Grid.Row="3"
-                     Width="350"
-                     Height="15"
-                     HorizontalAlignment="Center"
-                     VerticalAlignment="Center"
-                     Minimum="0"
-                     Maximum="100"
-                     Value="{Binding ProgressValue}"
-                     CornerRadius="20"/>
+		<!-- Kartka z tytułem i wpisami -->
+		<Border Grid.Row="1" Grid.RowSpan="3"
+				x:Name="Icon" Opacity="0"
+				Width="250"
+				Height="350"
+				BorderBrush="White"
+				BorderThickness="3"
+				CornerRadius="10"
+				HorizontalAlignment="Center"
+				VerticalAlignment="Center"
+				Background="Transparent"
+				Padding="20">
+			<StackPanel Spacing="25" VerticalAlignment="Center"> 
 
-		<!-- Tekst 'Loading...' pod paskiem -->
-		<TextBlock Grid.Row="4"
-                   Text="Loading..."
-                   FontSize="16"
-                   HorizontalAlignment="Center"
-                   VerticalAlignment="Center"
-                   Foreground="White"
-                   Margin="10,10,10,20"/>
+				<!-- Tytuł w ramce -->
+				
+					<TextBlock Text="My Organizer"
+						   x:Name="Icon0" Opacity="0"
+						   FontSize="28"
+						   FontWeight="Bold"
+						   Foreground="White"
+						   HorizontalAlignment="Center"
+						   Margin="0,0,0,30"/>
+			
+				
+
+				<!-- Wiersz 1 -->
+				<StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Spacing="20" x:Name="Icon1" Opacity="0">
+					<Rectangle Fill="White" Height="2" Width="160" VerticalAlignment="Center"/>
+					<Path Data="M12,2A10,10 0 1,0 22,12A10,10 0 0,0 12,2
+                      M16.59,7.58L10,14.17L7.41,11.58L6,13L10,17L18,9L16.59,7.58Z"
+						  Fill="White"
+						  Width="48" Height="28"
+						  HorizontalAlignment="Right"/>
+				</StackPanel>
+
+				<!-- Wiersz 2 -->
+				<StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Spacing="20" x:Name="Icon2" Opacity="0">
+					<Rectangle Fill="White" Height="2" Width="160" VerticalAlignment="Center"/>
+					<Path Data="M12,2A10,10 0 1,0 22,12A10,10 0 0,0 12,2
+                      M16.59,7.58L10,14.17L7.41,11.58L6,13L10,17L18,9L16.59,7.58Z"
+						  Fill="White"
+						  Width="48" Height="28"
+						  HorizontalAlignment="Right"/>
+				</StackPanel>
+
+				<!-- Wiersz 3 -->
+				<StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Spacing="20" x:Name="Icon3" Opacity="0">
+					<Rectangle Fill="White" Height="2" Width="160" VerticalAlignment="Center"/>
+					<Path Data="M12,2A10,10 0 1,0 22,12A10,10 0 0,0 12,2
+                      M16.59,7.58L10,14.17L7.41,11.58L6,13L10,17L18,9L16.59,7.58Z"
+						  Fill="White"
+						  Width="48" Height="28"
+						  HorizontalAlignment="Right"/>
+				</StackPanel>
+
+			</StackPanel>
+		</Border>
+
+		<!-- Pasek ładowania i napis -->
+		<StackPanel Grid.Row="4"
+					Margin="0,45,0,25"
+					HorizontalAlignment="Center"
+					VerticalAlignment="Center">
+			<ProgressBar Width="20"
+						 Height="15"
+						 Minimum="0"
+						 Maximum="100"
+						 Value="{Binding ProgressValue}"
+						 CornerRadius="20"
+						 Margin="0,10"/>
+			<TextBlock Text="Loading..."
+					   FontSize="16"
+					   HorizontalAlignment="Center"
+					   VerticalAlignment="Center"
+					   Foreground="White"
+					   Margin="0,10,0,20"/>
+		</StackPanel>
 	</Grid>
 </Window>

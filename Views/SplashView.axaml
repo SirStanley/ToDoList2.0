@@ -17,7 +17,6 @@
 
 	<Grid RowDefinitions="*,*,*,*,*">
 
-		<!-- Kartka z tytułem i wpisami -->
 		<Border Grid.Row="1" Grid.RowSpan="3"
 				x:Name="Icon" Opacity="0"
 				Width="250"
@@ -31,7 +30,7 @@
 				Padding="20">
 			<StackPanel Spacing="25" VerticalAlignment="Center"> 
 
-				<!-- Tytuł w ramce -->
+				
 				
 					<TextBlock Text="My Organizer"
 						   x:Name="Icon0" Opacity="0"
@@ -43,7 +42,6 @@
 			
 				
 
-				<!-- Wiersz 1 -->
 				<StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Spacing="20" x:Name="Icon1" Opacity="0">
 					<Rectangle Fill="White" Height="2" Width="160" VerticalAlignment="Center"/>
 					<Path Data="M12,2A10,10 0 1,0 22,12A10,10 0 0,0 12,2
@@ -53,7 +51,6 @@
 						  HorizontalAlignment="Right"/>
 				</StackPanel>
 
-				<!-- Wiersz 2 -->
 				<StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Spacing="20" x:Name="Icon2" Opacity="0">
 					<Rectangle Fill="White" Height="2" Width="160" VerticalAlignment="Center"/>
 					<Path Data="M12,2A10,10 0 1,0 22,12A10,10 0 0,0 12,2
@@ -63,7 +60,7 @@
 						  HorizontalAlignment="Right"/>
 				</StackPanel>
 
-				<!-- Wiersz 3 -->
+			
 				<StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Spacing="20" x:Name="Icon3" Opacity="0">
 					<Rectangle Fill="White" Height="2" Width="160" VerticalAlignment="Center"/>
 					<Path Data="M12,2A10,10 0 1,0 22,12A10,10 0 0,0 12,2
@@ -76,7 +73,6 @@
 			</StackPanel>
 		</Border>
 
-		<!-- Pasek ładowania i napis -->
 		<StackPanel Grid.Row="4"
 					Margin="0,45,0,25"
 					HorizontalAlignment="Center"

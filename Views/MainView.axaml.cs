@@ -1,6 +1,5 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using Avalonia;
 using Organizer.Models;
 using Organizer.ViewModels;
 

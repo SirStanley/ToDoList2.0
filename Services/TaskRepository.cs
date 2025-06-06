@@ -65,14 +65,14 @@ namespace Organizer.Services
             }
             else
             {
-                // Jeśli zadanie nie istnieje, dodajemy nowe
+                
                 tasks.Add(task);
             }
 
             await SaveTasksToFileAsync(task.Date, tasks);
         }
 
-        // Usuwa zadanie z pliku
+      
         public async Task DeleteTaskAsync(Guid taskId, DateTime date)
         {
             var tasks = (await GetTasksForDateAsync(date)).Where(t => t.Id != taskId).ToList();
